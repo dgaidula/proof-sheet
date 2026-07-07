@@ -285,7 +285,7 @@ test('--exclude skips matching files', () => {
     writePng(path.join(col, 'a.png'));
     writePng(path.join(col, 'a-compound-whites.png'));
     const out = path.join(dir, 'sheet.html');
-    run('--exclude', '-compound-whites', '--out', out, col);
+    run('--exclude=-compound-whites', '--out', out, col);
     const html = readFileSync(out, 'utf8');
     assert.match(html, /a\.png/);
     assert.doesNotMatch(html, /compound-whites/);
