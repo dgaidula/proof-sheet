@@ -276,3 +276,20 @@ test('CLI: rejects an unknown --sort value', () => {
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test('--exclude skips matching files', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'ps-'));
+  try {
+    const col = path.join(dir, 'art');
+    mkdirSync(col);
+    writePng(path.join(col, 'a.png'));
+    writePng(path.join(col, 'a-compound-whites.png'));
+    const out = path.join(dir, 'sheet.html');
+    run('--exclude', '-compound-whites', '--out', out, col);
+    const html = readFileSync(out, 'utf8');
+    assert.match(html, /a\.png/);
+    assert.doesNotMatch(html, /compound-whites/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

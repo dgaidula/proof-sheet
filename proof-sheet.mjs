@@ -77,11 +77,12 @@ function compareStems(a, b) {
 
 // ---- scanning ---------------------------------------------------------------
 
-function scanDir(dir) {
+function scanDir(dir, exclude = []) {
   const entries = readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name));
   const files = [];
   for (const e of entries) {
     if (!e.isFile() || e.name.startsWith('.')) continue;
+    if (exclude.some((pat) => e.name.includes(pat))) continue;
     const ext = path.extname(e.name).slice(1).toLowerCase();
     if (!ACCEPTED_EXT.has(ext)) continue;
     const full = path.join(dir, e.name);
@@ -383,6 +384,7 @@ ${missingCount} missing cell${missingCount === 1 ? '' : 's'} &middot; generated 
 async function main() {
   const { values, positionals } = parseArgs({
     options: {
+      exclude: { type: 'string', multiple: true },
       out: { type: 'string', default: 'proof-sheet.html' },
       title: { type: 'string' },
       sort: { type: 'string', default: 'name' },
@@ -424,7 +426,8 @@ async function main() {
     process.exit(1);
   }
 
-  const columns = columnArgs.map(({ label, dir }) => ({ label, dir, files: scanDir(dir) }));
+  const exclude = values.exclude ?? [];
+  const columns = columnArgs.map(({ label, dir }) => ({ label, dir, files: scanDir(dir, exclude) }));
   const totalFiles = columns.reduce((n, c) => n + c.files.length, 0);
   if (totalFiles === 0) {
     console.error('no images found (accepted: png jpg jpeg webp gif svg tif tiff)');
