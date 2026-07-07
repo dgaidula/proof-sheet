@@ -1,0 +1,39 @@
+{
+  "name": "proof-sheet",
+  "version": "1.0.0",
+  "description": "Generate a self-contained HTML contact sheet for reviewing an image-processing batch: columns of folders, rows matched by filename, so you can eyeball original vs processed side by side.",
+  "type": "module",
+  "bin": {
+    "proof-sheet": "./proof-sheet.mjs"
+  },
+  "files": [
+    "proof-sheet.mjs",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "contact-sheet",
+    "proof-sheet",
+    "image-review",
+    "batch",
+    "html",
+    "diff",
+    "qa",
+    "cli"
+  ],
+  "author": "Dan Gaidula <dan@iceboxind.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgaidula/proof-sheet.git"
+  },
+  "homepage": "https://github.com/dgaidula/proof-sheet#readme",
+  "bugs": {
+    "url": "https://github.com/dgaidula/proof-sheet/issues"
+  }
+}
